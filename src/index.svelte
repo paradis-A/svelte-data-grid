@@ -766,29 +766,16 @@
   }
 
   /**
-   * Number of rows to render in the viewport
-   */
-  let numRowsInViewport = Math.ceil(__innerOffsetHeight / rowHeight);
-
-  $: {
-    numRowsInViewport = Math.ceil(__innerOffsetHeight / rowHeight);
-  }
-
-  /**
    * Computes which rows should be visible
    */
   let visibleRows;
 
   $: {
-    const start = Math.max(
-      0,
-      Math.floor(__scrollTop / rowHeight - __extraRows / 2)
-    );
-    const end = start + numRowsInViewport + __extraRows;
+    const end = rows.length + __extraRows;
 
-    visibleRows = rows.slice(start, end).map((x, i) => {
+    visibleRows = rows.map((x, i) => {
       return {
-        i: i + start, // for aria-rowindex
+        i, // for aria-rowindex
         data: x // the row data
       };
     });
@@ -1055,7 +1042,7 @@
     on:scroll={onScroll}
     on:mousewheel={mousewheel}
     on:DOMMouseScroll={mousewheel}
-    style="height: 100%;"
+    style="height:{rows.length*24}px; margin-left:-1px;"
     role="rowgroup">
 
     {#if allowColumnAffix}
