@@ -52,6 +52,7 @@
     if (event.sourceCapabilities) {
       delete column.activeRow;
     }
+    else event.srcElement.focus() // First inputbox loses focus after 1st char for some reason 
   }
   export function onInput(event) {
     const value = textbox.value;

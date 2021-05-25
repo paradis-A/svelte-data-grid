@@ -1,5 +1,5 @@
 <script>
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount } from "svelte";
   import EditHistory from "./edit-history";
   import { createEventDispatcher } from "svelte";
 
@@ -241,7 +241,6 @@
       copy.style.overflow = "hidden";
       copy.style.background = "#dddddd";
       copy.style["z-index"] = "99999";
-
       return copy;
     }
 
@@ -275,37 +274,30 @@
   }
 
   function onWindowKeyDown(event) {
-
-    
     if (event.ctrlKey) {
       if (event.keyCode === 90) {
         undo();
         event.preventDefault();
       }
-
       if (event.keyCode === 89) {
         redo();
         event.preventDefault();
       }
     }
-
-    if([38,40].includes(event.keyCode) && EnableCursor ){ 
+    if ([38,40].includes(event.keyCode) && EnableCursor ){ 
       const Direction=(event.keyCode==40)?1:0
       moveCursorWithIndexRow(Direction)
       event.preventDefault()
     }
-    
   }
 
   function moveCursorWithIndexRow(Direction){
-    
     const last=CurrentSelectedRow
     if (Direction===1){
       // upscroll code
       if(rows.length-1>=CurrentSelectedRow+1){
           CurrentSelectedRow++
       }
-
     } else {
         // upscroll code
         if(CurrentSelectedRow-1>=0){
@@ -322,7 +314,6 @@
     }else {
       tableSpace.scrollTop-=(rowHeight)
     }
-
   }
 
   /**
@@ -931,7 +922,6 @@
   .grid-headers .grid-cell {
     text-align: center;
     font-weight: bold;
-    cursor: pointer;
   }
 
   .grid-headers .cell-default:hover {
@@ -1016,7 +1006,7 @@
             { i, columnWidths, __affixedColumnIndices, __scrollLeft }
           )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {
             i===columnWidths.length-1 ? lastColWidth+1 : columnWidths[i]+'px'
-          };"
+          }; {allowColumnReordering ? 'cursor:pointer;' : ''}"
           title={column.display || ''}
           use:dragCopy={allowColumnReordering}
           role="columnheader">
