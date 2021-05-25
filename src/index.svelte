@@ -163,6 +163,7 @@
   export let CurrentSelectedRow = 0;
   export let Striped=false;
   export let tableWidth=0; // allow user to define table width
+  export let onCellUpdate = () => {}
 
   onMount(() => {
     editHistory = new EditHistory(rows);
@@ -339,6 +340,7 @@
   }
 
   /**
+   * DOESN'T WORK!
    * Event handler for when a value has been updated
    * @param {Object} event Event object with row and column objects
    */
@@ -1086,8 +1088,7 @@
         rowNumber={row.i}
         viewindex={i}
         on:click={onClickRow}
-
-        >
+      >
         {#each columns as column, j}
           <div
             class="grid-cell"
@@ -1103,7 +1104,8 @@
                 rowNumber={row.i}
                 {column}
                 {row}
-                on:valueupdate={onCellUpdated} />
+                on:update={onCellUpdate}
+              />
             {:else}
               <div style={column.style} class={`cell-default ${(row.i%2===0 &&Striped&& !(CurrentSelectedRow===row.i && EnableCursor))?' stripedRow ':''} ${(CurrentSelectedRow===row.i && EnableCursor)?'selectedrow':''}`}  >{row.data[column.dataName] || ''}</div>
             {/if}

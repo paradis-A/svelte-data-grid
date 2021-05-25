@@ -1,12 +1,11 @@
 <script>
   import { afterUpdate, beforeUpdate, createEventDispatcher } from "svelte";
-  import debounce from "debounce";
-  const INPUT_DEBOUNCE_INTERVAL = 400;
   const dispatch = createEventDispatcher();
   export let textbox = null;
   export let column;
   export let rowNumber;
   export let row;
+  export let updateRate=2000;
   let prevColumn;
   let prevRow;
   // [svelte-upgrade warning]
@@ -54,16 +53,18 @@
     }
     else event.srcElement.focus() // First inputbox loses focus after 1st char for some reason 
   }
+  let timeoutId
   export function onInput(event) {
     const value = textbox.value;
-    setTimeout(() => {
-      dispatch("valueupdate", {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => {
+      dispatch("update", {
         row,
         column,
         value,
         rowNumber
       });
-    }, 0);
+    }, updateRate);
   }
 </script>
 
