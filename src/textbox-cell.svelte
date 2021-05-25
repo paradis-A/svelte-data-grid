@@ -15,7 +15,7 @@
   beforeUpdate(() => {
     if (prevColumn !== column || prevRow !== row) {
       const updateTextbox = () => {
-        if (textbox) textbox.value = row.data[column.dataName];
+        if (textbox) textbox.value = row.data[column.dataName] || '';
       };
       if (textbox) {
         updateTextbox();
