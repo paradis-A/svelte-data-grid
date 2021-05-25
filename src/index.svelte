@@ -162,8 +162,7 @@
   export let EnableCursor = false;
   export let CurrentSelectedRow = 0;
   export let Striped=false;
-
-  
+  export let tableWidth=0; // allow user to define table width
 
   onMount(() => {
     editHistory = new EditHistory(rows);
@@ -736,11 +735,17 @@
    * Width of the overall grid space
    */
   let gridSpaceWidth = 0; //TODO setter probably not needed due to reactive statement
+  let lastColWidth = 0; // allow auto last col width if tableWidth is defined
 
   $: {
     let sum = 0;
     for (let i = 0; i < columnWidths.length; i++) {
-      sum += columnWidths[i];
+      if (i < columnWidths.length - 1 || !tableWidth)
+        sum += columnWidths[i];
+      else if (tableWidth) {
+        lastColWidth = tableWidth - sum
+        sum += lastColWidth
+      }
     }
 
     /**
@@ -754,7 +759,7 @@
       sum *= 2;
     }
 
-    gridSpaceWidth = sum;
+    gridSpaceWidth = tableWidth || sum;
   }
 
   /**
@@ -1001,7 +1006,7 @@
       -- control the 'scroll' of the header row -->
     <div
       class="grid-header-row"
-      style="left: -{__scrollLeft}px; height: {rowHeight}px; width: {gridSpaceWidth}px;"
+      style="left: -{__scrollLeft+1}px; height: {rowHeight}px; width: {gridSpaceWidth}px;"
       role="row">
       {#each columns as column, i (i)}
         <div
@@ -1009,7 +1014,9 @@
           on:mousedown={event => onColumnDragStart(event, i)}
           style="z-index: {getCellZIndex(__affixedColumnIndices, i)}; left: {getCellLeft(
             { i, columnWidths, __affixedColumnIndices, __scrollLeft }
-          )}px; width: {columnWidths[i]}px; height: {rowHeight}px; line-height: {rowHeight}px;"
+          )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {
+            i===columnWidths.length-1 ? lastColWidth+1 : columnWidths[i]+'px'
+          };"
           title={column.display || ''}
           use:dragCopy={allowColumnReordering}
           role="columnheader">
@@ -1042,7 +1049,7 @@
     on:scroll={onScroll}
     on:mousewheel={mousewheel}
     on:DOMMouseScroll={mousewheel}
-    style="height:{rows.length*24}px; margin-left:-1px;"
+    style="height:{rows.length*24}px; left:-1px;"
     role="rowgroup">
 
     {#if allowColumnAffix}
@@ -1096,7 +1103,9 @@
             class="grid-cell"
             style="z-index: {getCellZIndex(__affixedColumnIndices, j)}; left: {getCellLeft(
               { i: j, columnWidths, __affixedColumnIndices, __scrollLeft }
-            )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {columnWidths[j]}px;"
+            )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {
+              j===columnWidths.length-1 ? lastColWidth : columnWidths[j]+'px'
+            };"
             role="cell">
             {#if column.cellComponent}
               <svelte:component
