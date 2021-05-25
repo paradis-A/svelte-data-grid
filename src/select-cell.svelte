@@ -44,7 +44,7 @@
 
 <div class="select-cell">
   {#if column.options instanceof Array}
-    <select on:change={onChange} bind:this={select}>
+    <select on:blur={onChange} bind:this={select}>
       {#each column.options as option}
         <option
           value={option.value}
