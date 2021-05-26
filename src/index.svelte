@@ -1096,7 +1096,7 @@
               { i: j, columnWidths, __affixedColumnIndices, __scrollLeft }
             )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {
               j===columnWidths.length-1 ? lastColWidth : columnWidths[j]+'px'
-            };"
+            }; {column.align ? 'text-align:'+column.align+';' : ''}"
             role="cell">
             {#if column.cellComponent}
               <svelte:component
