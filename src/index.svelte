@@ -814,6 +814,9 @@
 </script>
 
 <style>
+  .data-grid-wrapper {
+    --borderColor: #ddd;
+  }
   .row-action-line {
     position: absolute;
     left: 0;
@@ -944,7 +947,7 @@
   }
 
   .grid-row:not(:last-child) {
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid var(--borderColor);
   }
 
   .grid-cell {
@@ -959,7 +962,7 @@
   }
 
   .grid-cell:not(:last-child) {
-    border-right: 1px solid #666;
+    border-right: 1px solid var(--borderColor);
   }
 
   .selectedrow{
