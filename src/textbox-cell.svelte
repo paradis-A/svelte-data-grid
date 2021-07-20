@@ -8,6 +8,8 @@
   export let updateRate=2000;
   let prevColumn;
   let prevRow;
+  let timeoutId;
+
   // [svelte-upgrade warning]
   // beforeUpdate and afterUpdate handlers behave
   // differently to their v2 counterparts
@@ -24,9 +26,6 @@
       prevColumn = column;
     }
   });
-  // [svelte-upgrade warning]
-  // beforeUpdate and afterUpdate handlers behave
-  // differently to their v2 counterparts
   afterUpdate(() => {
     /* Since data-grid isn't using a keyed each block to display the rows, we need to update
       the focus as the grid scrolls. When this cell component receives a new row, check if the column's active row
@@ -40,12 +39,11 @@
       prevRow = row;
     }
   });
-  // [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function onFocus(event) {
+
+  function onFocus(event) {
     column.activeRow = rowNumber;
   }
-  export function onBlur(event) {
+  function onBlur(event) {
     // if blur event was user-initiated and not initiated by the blur call above,
     // remove the activeRow property
     if (event.sourceCapabilities) {
@@ -53,8 +51,7 @@
     }
     else event.srcElement.focus() // First inputbox loses focus after 1st char for some reason 
   }
-  let timeoutId
-  export function onInput(event) {
+  function onInput(event) {
     const value = textbox.value;
     clearTimeout(timeoutId)
     timeoutId = setTimeout(() => {

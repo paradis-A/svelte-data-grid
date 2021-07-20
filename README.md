@@ -1,8 +1,30 @@
 [![npm](https://img.shields.io/npm/v/svelte-data-grid.svg?style=flat-square)](https://npmjs.org/package/svelte-data-grid)
-# Svelte Data Grid
+# Svelte Data Grid, slightly enhanced
+
+This is a fork of [gamalielmendez's fork](https://github.com/gamalielmendez/svelte-data-grid)
+of [svelte-data-grid](https://github.com/bsssshhhhhhh/svelte-data-grid).
+
+gamalielmendez's fork added:
+- Infinite scroll
+- Ability to select row
+- Move selection cursor with mouse wheel
+- Changecursor event
+- Move cursor with the keyboard arrows
+- Striped rows
+
+This fork added/fixed:
+- Render "" instead of "undefined" if no data
+- Changed `on:change` to `on:blur` per warning message
+- Added tableWidth prop, allow last column to have auto width
+- Fixed input loses focus
+- Added debounce
+- Fixed dispatch
+- Added align prop
+- Lighter border colors
+- Added onCellUpdate and onHeaderUpdate (see usage below)
 
 ## [Demo](https://bsssshhhhhhh.github.io/svelte-data-grid-demo/)
-
+### [Demo repo](https://github.com/bsssshhhhhhh/svelte-data-grid-demo)
 
 Svelte Data Grid is a svelte v3 component for displaying and editing any amount of data.
 
@@ -196,6 +218,45 @@ import MyCustomCell from './MyCustomCell.svelte';
 
 ## Custom Header Components
 Header components can also be specified in `columns` entries as the `headerComponent` property. Header components are only passed `column`, the column object from `columns`.
+
+## onCellUpdate, onHeaderUpdate
+
+`on:valueUpdated={handler}` doesn't seem to work for me (at least not for textbox-cell, `event.*` were all `undefined`).
+Thus, `onCellUpdate` callback is added for cell updates.
+
+Likewise,`onHeaderUpdate` callback is added for custom events trigger on a custom header column. Eg.
+
+MyCustomHeaderCol.svelte
+```svelte
+<script>
+  export function onUpdate(action) {
+    dispatch('update', {
+      action,
+    })
+  }
+</script>
+
+<i on:click={evt => onUpdate('someAction')}>
+```
+
+MyCustomHeaderCol.svelte
+```svelte
+<script>
+  $: columns = [ ...otherCols,
+    { headerComponent: MyCustomHeaderCol, disallowResize: true },
+  ]
+  const onCellUpdate = (event) => {
+    const { rowNumber, value } = event.detail
+  }
+  const onHeaderUpdate = (event) => {
+    const { action } = event.detail
+  }
+</script>
+<DataGrid {rows} {columns} {...props} {tableWidth}
+  {onHeaderUpdate}
+  {onCellUpdate}
+/>
+```
 
 ## Options:
 

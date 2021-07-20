@@ -164,6 +164,7 @@
   export let Striped=false;
   export let tableWidth=0; // allow user to define table width
   export let onCellUpdate = () => {}
+  export let onHeaderUpdate = () => {}
 
   onMount(() => {
     editHistory = new EditHistory(rows);
@@ -340,9 +341,11 @@
   }
 
   /**
-   * DOESN'T WORK!
    * Event handler for when a value has been updated
    * @param {Object} event Event object with row and column objects
+   * @note `on:valueUpdated={handler}` doesn't seem to work for me
+   * (at least not for textbox-cell, `event.*` were all `undefined`).
+   * Thus, `onCellUpdate` callback is added and will be used instead.
    */
   function onCellUpdated(event) {
     rows[event.detail.rowNumber][event.detail.column.dataName] =
@@ -974,7 +977,6 @@
   .stripedRow{
     background-color: #ccc;
   }
-
 </style>
 
 <svelte:window
@@ -1016,7 +1018,9 @@
           use:dragCopy={allowColumnReordering}
           role="columnheader">
           {#if column.headerComponent}
-            <svelte:component this={column.headerComponent} {column} />
+            <svelte:component this={column.headerComponent} {column} 
+              on:update={onHeaderUpdate}
+            />
           {:else}
             <div class="cell-default">{column.display || ''}</div>
           {/if}
