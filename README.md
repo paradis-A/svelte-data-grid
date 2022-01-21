@@ -40,20 +40,22 @@ Svelte Data Grid is a svelte v3 component for displaying and editing any amount 
 ## Current Limitations:
  - Every row must have the same height and text cannot break onto the next line
 
+## Install:
+
+To install this fork, replace `x.y` with the latest in [releases](https://github.com/fuzzthink/svelte-data-grid/releases)
+```
+npm install -D https://github.com/fuzzthink/svelte-data-grid/tarball/v1.x.y
+yarn add -D https://github.com/fuzzthink/svelte-data-grid/tarball/v1.x.y
+```
+
 ## Usage:
-
-If using within Sapper:
-```
-npm install svelte-data-grid --save-dev
-```
-
-If using from inside a svelte component:
+Within a svelte component:
 ```
 import DataGrid from "svelte-data-grid";
 <DataGrid rows={myRows} allowColumnReordering={false} columns={myColumnDefinitions} on:columnOrderUpdated={saveNewColumnOrder}>
 ```
 
-If using from outside svelte:
+Outside of svelte:
 ```
 import DataGrid from "svelte-data-grid";
 const grid = new DataGrid({
