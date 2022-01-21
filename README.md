@@ -15,13 +15,14 @@ gamalielmendez's fork added:
 This fork added/fixed:
 - Render "" instead of "undefined" if no data
 - Changed `on:change` to `on:blur` per warning message
-- Added tableWidth prop, allow last column to have auto width (overriding width settings for last col)
+- Added `tableWidth` prop, allow last column to have auto width (overriding width settings for last col)
 - Fixed input loses focus
 - Added debounce
 - Fixed dispatch
-- Added align prop
+- Added `align` prop
+- Added `headerAlign` prop to override default header cell 'center' text-align
 - Lighter border colors
-- Added onCellUpdate and onHeaderUpdate (see usage below)
+- Added `onCellUpdate` and `onHeaderUpdate` (see usage below)
 
 ## [Demo](https://bsssshhhhhhh.github.io/svelte-data-grid-demo/)
 ### [Demo repo](https://github.com/bsssshhhhhhh/svelte-data-grid-demo)

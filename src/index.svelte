@@ -1072,12 +1072,15 @@
           {#if !column.disallowResize}
             <div
               class="grid-cell-size-capture"
-              style="left: {getCellLeft({
-                i: i + 1,
-                columnWidths,
-                __affixedColumnIndices,
-                __scrollLeft
-              }) - Math.floor(__columnHeaderResizeCaptureWidth / 2)}px; width: {__columnHeaderResizeCaptureWidth}px;"
+              style="
+                left: {getCellLeft({
+                  i: i + 1,
+                  columnWidths,
+                  __affixedColumnIndices,
+                  __scrollLeft
+                }) - Math.floor(__columnHeaderResizeCaptureWidth / 2)}px;
+                width: {__columnHeaderResizeCaptureWidth}px;
+                text-align: {column.headerAlign || 'center'};"
               on:mousedown={event => onColumnResizeStart(event, i)} />
           {/if}
         {/each}
