@@ -15,7 +15,7 @@ gamalielmendez's fork added:
 This fork added/fixed:
 - Render "" instead of "undefined" if no data
 - Changed `on:change` to `on:blur` per warning message
-- Added tableWidth prop, allow last column to have auto width
+- Added tableWidth prop, allow last column to have auto width (overriding width settings for last col)
 - Fixed input loses focus
 - Added debounce
 - Fixed dispatch

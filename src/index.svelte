@@ -162,7 +162,7 @@
   export let EnableCursor = false;
   export let CurrentSelectedRow = 0;
   export let Striped=false;
-  export let tableWidth=0; // allow user to define table width
+  export let tableWidth = 0; // allow user to define table width. Defining this will __override__ last col's width settings to the reminding width
   export let onCellUpdate = () => {}
   export let onHeaderUpdate = () => {}
 
@@ -1009,13 +1009,14 @@
         <div
           class="grid-cell"
           on:mousedown={event => onColumnDragStart(event, i)}
-          style="z-index: {getCellZIndex(__affixedColumnIndices, i)}; left: {getCellLeft(
-            { i, columnWidths, __affixedColumnIndices, __scrollLeft }
-          )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {
-            i===columnWidths.length-1 ? lastColWidth+1 : columnWidths[i]+'px'
-          }; {allowColumnReordering ? 'cursor:pointer;' : ''}"
-          title={column.display || ''}
           use:dragCopy={allowColumnReordering}
+          style="
+            z-index: {getCellZIndex(__affixedColumnIndices, i)};
+            left: {getCellLeft({ i, columnWidths, __affixedColumnIndices, __scrollLeft })}px;
+            height: {rowHeight}px; line-height: {rowHeight}px;
+            width: {(i===columnWidths.length-1 ? lastColWidth+1 : columnWidths[i])+'px'};
+            {allowColumnReordering ? 'cursor:pointer;' : ''}"
+          title={column.display || ''}
           role="columnheader">
           {#if column.headerComponent}
             <svelte:component this={column.headerComponent} {column} 
