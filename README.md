@@ -19,8 +19,8 @@ This fork added/fixed:
 - Fixed input loses focus
 - Added debounce
 - Fixed dispatch
-- Added `align` prop
-- Added `headerAlign` prop to override default header cell 'center' text-align
+- Added `align` col config
+- Added `headerAlign` col config to override default header cell 'center' text-align
 - Lighter border colors
 - Added `onCellUpdate` and `onHeaderUpdate` (see usage below)
 

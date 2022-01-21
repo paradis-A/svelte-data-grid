@@ -1015,6 +1015,7 @@
             left: {getCellLeft({ i, columnWidths, __affixedColumnIndices, __scrollLeft })}px;
             height: {rowHeight}px; line-height: {rowHeight}px;
             width: {(i===columnWidths.length-1 ? lastColWidth+1 : columnWidths[i])+'px'};
+            text-align: {column.headerAlign || 'center'};
             {allowColumnReordering ? 'cursor:pointer;' : ''}"
           title={column.display || ''}
           role="columnheader">
@@ -1079,8 +1080,7 @@
                   __affixedColumnIndices,
                   __scrollLeft
                 }) - Math.floor(__columnHeaderResizeCaptureWidth / 2)}px;
-                width: {__columnHeaderResizeCaptureWidth}px;
-                text-align: {column.headerAlign || 'center'};"
+                width: {__columnHeaderResizeCaptureWidth}px;"
               on:mousedown={event => onColumnResizeStart(event, i)} />
           {/if}
         {/each}
