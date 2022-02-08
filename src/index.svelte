@@ -164,6 +164,9 @@
   export let Striped=false;
   export let tableWidth = 0; // allow user to define table width. Defining this will __override__ last col's width settings to the reminding width
   export let onCellUpdate = () => {}
+  export let onClickCell = () => {}
+  export let onMouseEnterCell = () => {}
+  export let onMouseLeaveCell = () => {}
   export let onHeaderUpdate = () => {}
 
   onMount(() => {
@@ -1108,6 +1111,9 @@
             )}px; height: {rowHeight}px; line-height: {rowHeight}px; width: {
               j===columnWidths.length-1 ? lastColWidth : columnWidths[j]+'px'
             }; {column.align ? 'text-align:'+column.align+';' : ''}"
+            on:click={() => onClickCell(row.data[column.dataName], column.dataName, i, j)}
+            on:mouseenter={() => onMouseEnterCell(row.data[column.dataName], column.dataName, i, j)}
+            on:mouseleave={() => onMouseLeaveCell(row.data[column.dataName], column.dataName, i, j)}
             role="cell">
             {#if column.cellComponent}
               <svelte:component

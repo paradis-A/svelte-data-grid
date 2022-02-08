@@ -22,7 +22,8 @@ This fork added/fixed:
 - Added `align` col config
 - Added `headerAlign` col config to override default header cell 'center' text-align
 - Lighter border colors
-- Added `onCellUpdate` and `onHeaderUpdate` (see usage below)
+- Added update handlers `onCellUpdate` and `onHeaderUpdate` (see usage below)
+- Added cell event handlers `onClickCell`, `onMouseEnterCell`, and `onMouseLeaveCell` (see usage below)
 
 ## [Demo](https://bsssshhhhhhh.github.io/svelte-data-grid-demo/)
 ### [Demo repo](https://github.com/bsssshhhhhhh/svelte-data-grid-demo)
@@ -43,20 +44,20 @@ Svelte Data Grid is a svelte v3 component for displaying and editing any amount 
 ## Install:
 
 To install this fork, replace `x.y` with the latest in [releases](https://github.com/fuzzthink/svelte-data-grid/releases)
-```
+```cs
 npm install -D https://github.com/fuzzthink/svelte-data-grid/tarball/v1.x.y
 yarn add -D https://github.com/fuzzthink/svelte-data-grid/tarball/v1.x.y
 ```
 
 ## Usage:
 Within a svelte component:
-```
+```js
 import DataGrid from "svelte-data-grid";
 <DataGrid rows={myRows} allowColumnReordering={false} columns={myColumnDefinitions} on:columnOrderUpdated={saveNewColumnOrder}>
 ```
 
 Outside of svelte:
-```
+```js
 import DataGrid from "svelte-data-grid";
 const grid = new DataGrid({
   target: document.querySelector('#my-grid-wrapper'),
@@ -72,13 +73,14 @@ grid.$on('columnOrderUpdated', () => {
   // save new column  order
 });
 ```
+
 To learn more about using DataGrid outside of svelte, read [svelte's guide](https://svelte.dev/docs#Client-side_component_API) on how to interact with a svelte component. It is possible to integrate into any framework.
 
 DataGrid requires 2 properties to be passed in order to display data: `rows` and `columns`.
 
 `columns` is an array of objects containing at least 3 properties: `display`, `dataName`, and `width`. A svelte component can be specified in `headerComponent` and `cellComponent` if any custom cell behavior is required.
 
-```
+```js
 [
   {
     display: 'Fruit Name',  // What will be displayed as the column header
@@ -98,7 +100,7 @@ DataGrid requires 2 properties to be passed in order to display data: `rows` and
 
 `rows` is an array of objects containing the data for each table row.
 
-```
+```js
 [
   {
     fruitName: 'Apple',
@@ -121,7 +123,7 @@ DataGrid requires 2 properties to be passed in order to display data: `rows` and
 Version 2 added early support for editing data. Due to the lack of using a keyed each block to render the rows, maintaining focus on controls as the user scrolls is a tad wonky. This will be resolved in a future version.
 
 Import the components:
-```
+```js
 import TextboxCell from 'svelte-data-grid/src/textbox-cell.svelte';
 import SelectCell from 'svelte-data-grid/src/select-cell.svelte';
 import CheckboxCell from 'svelte-data-grid/src/checkbox-cell.svelte';
@@ -129,7 +131,7 @@ import CheckboxCell from 'svelte-data-grid/src/checkbox-cell.svelte';
 
 ### Textbox Cell
 Textbox cell will debounce the user input, only recording changes after 400ms has elapsed since the user stops typing.
-```
+```js
 {
   display: 'Name',
   dataName: 'name',
@@ -141,7 +143,7 @@ Textbox cell will debounce the user input, only recording changes after 400ms ha
 ### Select Cell
 
 SelectCell requires that you provide an `options` array in your cell definition:
-```
+```js
 {
   display: 'Eye Color',
   dataName: 'eyeColor',
@@ -166,7 +168,7 @@ SelectCell requires that you provide an `options` array in your cell definition:
 
 ### Checkbox Cell
 CheckboxCell will set the checked state of the checkbox depending on the boolean value of the row's data.
-```
+```js
 {
   display: 'Active',
   dataName: 'isActive',
@@ -187,7 +189,7 @@ Components will be passed the following properties:
 
 
 MyCustomCell.svelte
-```
+```js
 <script>
 export let data = {
   colors: {
@@ -203,12 +205,12 @@ export let data = {
 ```
 
 Import the component
-```
+```js
 import MyCustomCell from './MyCustomCell.svelte';
 ```
 
 `columns` option:
-```
+```js
 [
   {
     display: 'Fruit Color'
@@ -221,6 +223,10 @@ import MyCustomCell from './MyCustomCell.svelte';
 
 ## Custom Header Components
 Header components can also be specified in `columns` entries as the `headerComponent` property. Header components are only passed `column`, the column object from `columns`.
+
+## onClickCell, onMouseEnterCell, onMouseLeaveCell
+
+You can pass these handlers to handle mouse on cell events. The params are all: (value, columnName, iRow, iCol)
 
 ## onCellUpdate, onHeaderUpdate
 
